@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<html lang="en">
+	<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}"/>
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+	<!-- 可选的Bootstrap主题文件（一般不使用） -->
+	<script src="/static/css/bootstrap-theme.min.css"></script>
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="/static/js/jquery.min.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="col-lg-4 col-lg-offset-4">
+		<h3 class="text-center"><a href="{% url 'blog:index' %}"><img src="{% static '/images/header.bmp' %}" class="img-circle" style="margin-top: -6px"></a>注册</h3>
+		<form action="{% url 'blog:register' %}" method="post">
+			{% csrf_token %}
+			{% for field in form %}
+				{{ field.label_tag }}
+				<br>
+				{{ field }}
+				{{ field.errors }}
+				{% if field.help_text %}
+					<p>{{ field.help_text|safe }}</p>
+				{% endif %}
+				<br>
+			{% endfor %}
+			<button type="submit" class="btn btn-default btn-block">注册</button>
+			<input type="hidden" name="next" value="{{ next }}"/>
+		</form>
+	</div>
+</body>
+</html>

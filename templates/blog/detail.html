@@ -1,0 +1,54 @@
+{% extends 'base.html' %} 
+{% block main %} 
+{% if user.username %}
+<article >
+    <header style="background: #FFF; border-radius: 10px; margin-left: 6%; margin-bottom: 1%; padding:20px">
+        <h1>{{ post.title }}</h1>
+        <div>
+            <span>{{ post.category.name }}</span>
+            &loz;
+            <span><a href="#">{{ post.author }}</a></span>
+            &loz;
+            <span>评论数:{{ post.comment_set.count }}</a></span>
+            &loz;
+            <span>阅读量:{{ post.visit }}</a></span>
+            &loz;
+            <span><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+        </div>
+    </header>
+    <div style="background: #FFF; border-radius: 10px; margin-left: 6%; margin-bottom: 1%; padding:20px">
+        {{ post.body|safe }}
+    </div>
+</article>
+<div style="background: #FFF; border-radius: 10px; margin-left: 6%; margin-bottom: 1%; padding:20px">
+    <form action="{% url 'blog:comment' post.pk %}" method="post">
+        {% csrf_token %}
+        <div>
+            {{ form.text }}
+            {{ form.text.errors }}
+            <br>   
+            <button type="submit" class="btn btn-default">发表</button>
+        </div>
+    </form>
+</div>
+<!-- row -->
+<div style="background: #FFF; border-radius: 10px; margin-left: 6%; margin-bottom: 2.5%; padding:2%; padding-right: 4%">
+    {% for comment in comment_list %}
+    <ul>
+        <li>
+            <b>
+            <span><a href="#">{{ comment.commentator }}</a></span>
+            <time>{{ comment.created_time }}</time>  
+            </b>
+            <div>
+                {{ comment.text }}
+            </div>       
+        </li>
+    </ul>
+    {% empty %}
+    <div class="text-muted text-center">暂无评论</div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-center" style="background: #FFF; border-radius: 10px; margin-left: 6%; margin-bottom: 2.5%; padding:2%; padding-right: 4%"> 请<a href="{% url 'login' %}?next={{ request.path }}">登录</a>后查看！</p>
+{% endif %} {% endblock main %}

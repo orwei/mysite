@@ -1,0 +1,46 @@
+{% extends 'base.html' %}  
+
+{% block main %} 
+{% for post in post_list %}
+
+<div class="container-fluid" style="background: #FFF; border-radius: 15px; margin-left: 6%; margin-bottom: 2%; padding:2%">
+    <article>
+        <h3><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+        <div>
+            <span>{{ post.category.name }}</span>
+            &loz;
+            <span><a href="#">{{ post.author }}</a></span>
+            &loz;
+            <span>评论数:{{ post.comment_set.count }}</a></span>
+            &loz;
+            <span>阅读量:{{ post.visit }}</a></span>
+            &loz;
+            <span><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+        </div>
+        <div>
+            <p>{{ post.excerpt }}</p>
+            <div>
+                <a href="{{ post.get_absolute_url }}">继续阅读→</a>
+            </div>
+        </div>
+    </article>
+</div>
+{% empty %}
+<div align="center">没有文章！</div>
+{% endfor %} 
+{% if is_paginated %}
+    <div class="" align="center">
+        {% if page_obj.has_previous %}
+            <a class="btn btn-info" href="?page={{ page_obj.previous_page_number }}"> Previous Page </a>
+        {% endif %}
+        <span>Page:{{ page_obj.number }} in {{ paginator.num_pages }} Pages</span>
+        {% if page_obj.has_next %}
+            <a class="btn btn-info" href="?page={{ page_obj.next_page_number }}"> Next Page </a>
+        {% endif %}
+    </div>
+{% endif %}
+<br>
+<br>
+{% endblock main %}
+
+
